@@ -7,6 +7,12 @@ import { DEFAULT_LOGIN_REDIRECT } from "./routes"
 export const { handlers, auth, signIn, signOut } = NextAuth({
     
     adapter : PrismaAdapter(db),
+    callbacks:{
+        async jwt({token}) {
+            console.log("Token", token)
+            return token 
+        }
+    },
     session:{strategy:'jwt'},
 ...authConfig
 })
