@@ -11,11 +11,11 @@ import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import FormError from '../Messages/FormError'
 import FormSuccess from '../Messages/FormSuccess'
-import { redirect } from 'next/navigation'
 
 export default function LoginComponent() {
     const [success, setSuccess] = useState<string | undefined>('');
     const [error, setError] = useState<string | undefined>('');
+    const [isloading, setIsLoding] = useState(false)
     const [isPending, startTransition] = useTransition();
 
     const form = useForm<z.infer<typeof LoginSchema>>({
@@ -29,7 +29,7 @@ export default function LoginComponent() {
     const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
         setError('')
         setSuccess('')
-
+        setIsLoding(true)
         startTransition(async () => {
             await login(values)
                 .then((data)=>{
@@ -38,7 +38,7 @@ export default function LoginComponent() {
                 })
         })
         
-       
+       setIsLoding(false)
     }
     return (
         <div className=' max-w-6xl sm:w-full '>
@@ -72,7 +72,9 @@ export default function LoginComponent() {
                     />
                                                         <FormError message={error} />
                                                         <FormSuccess message = {success} />
-                    <Button type="submit">Login</Button>
+                    <Button type="submit" defaultChecked={isloading}>
+                        {isloading ? (<><h1>loading...</h1></>) : (<><h1>Login</h1></>)}
+                    </Button>
                 </form>
             </Form>
         </div>

@@ -24,7 +24,7 @@ export const login = async (values : z.infer<typeof LoginSchema>) =>{
     })
     return {success : 'Login Success'}
   
-  } catch (error:any) {
+  } catch (error) {
     if (error instanceof AuthError) {
         switch(error.type){
           case "CredentialsSignin" : 
